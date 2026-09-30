@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share Feedback - Smart 3D Campus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+  :root {
+    --bg-0: #0d0b21;
+    --card-bg: rgba(23, 20, 56, 0.75);
+    --card-border: rgba(255, 255, 255, 0.12);
+    --input-bg: rgba(13, 11, 33, 0.6);
+    --input-border: rgba(255, 255, 255, 0.15);
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.4);
+    --text-hi: #ffffff;
+    --text-low: #94a3b8;
+    --radius: 24px;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-0);
+    color: var(--text-hi);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.18) 0%, transparent 45%),
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+    background-attachment: fixed;
+  }
+
+  header {
+    display: flex; 
+    align-items: center; 
+    gap: 16px;
+    padding: 20px 36px;
+    background: rgba(21, 19, 46, 0.7);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 10;
+  }
+
+  .back-btn {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; cursor: pointer; text-decoration: none; font-size: 16px;
+    transition: all 0.2s ease;
+  }
+  .back-btn:hover {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: #6366f1;
+    transform: translateX(-2px);
+  }
+
+  .head-titles h1 { 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 18px; 
+    font-weight: 800; 
+    letter-spacing: 0.8px; 
+    background: linear-gradient(135deg, #ffffff, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .head-titles p { font-size: 12px; color: var(--text-low); margin-top: 1px; }
+
+  main { max-width: 680px; margin: 0 auto; padding: 40px 24px 60px; }
+
+  .intro { margin-bottom: 28px; text-align: center; }
+  .intro .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 99px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #a5b4fc; font-size: 12px; font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .intro h2 { font-family: 'Poppins', sans-serif; font-size: 26px; font-weight: 700; color: #ffffff; margin-bottom: 8px; }
+  .intro p { font-size: 14px; color: var(--text-low); line-height: 1.6; }
+
+  .form-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #6366f1, #ec4899, #8b5cf6);
+  }
+
+  .field { margin-bottom: 22px; }
+  .field label {
+    display: block; font-size: 13px; font-weight: 600; color: #e2e8f0;
+    margin-bottom: 10px;
+  }
+
+  /* Chips Design */
+  .type-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .type-chip {
+    padding: 10px 16px; border-radius: 12px; font-size: 12.5px; font-weight: 600;
+    background: rgba(255, 255, 255, 0.05); color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer; transition: all 0.2s ease;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .type-chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .type-chip.selected {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+    color: #ffffff;
+    border-color: #818cf8;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  }
+
+  /* Inputs & Select */
+  select, input[type="text"], textarea {
+    width: 100%; padding: 14px 16px; border-radius: 14px;
+    border: 1px solid var(--input-border); font-family: inherit; font-size: 13.5px;
+    color: #ffffff; background: var(--input-bg);
+    transition: all 0.2s ease;
+  }
+  select option { background: #13112c; color: #ffffff; }
+  select:focus, input:focus, textarea:focus {
+    outline: none; 
+    border-color: #818cf8;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    background: rgba(13, 11, 33, 0.85);
+  }
+  textarea { resize: vertical; min-height: 110px; }
+
+  /* Star Rating */
+  .star-rating { display: flex; gap: 8px; font-size: 20px; color: #475569; cursor: pointer; }
+  .star-rating i.active { color: #f59e0b; }
+
+  .submit-btn {
+    width: 100%; padding: 15px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #ffffff; font-family: inherit;
+    font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px;
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+    transition: all 0.2s ease;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+  }
+  .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+  .success-msg {
+    display: none; align-items: center; gap: 12px;
+    background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 14px; padding: 16px 18px; margin-top: 20px; color: #34d399; font-size: 13.5px; font-weight: 500;
+  }
+  .success-msg.show { display: flex; }
+
+  .error-msg {
+    display: none; align-items: center; gap: 12px;
+    background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.4);
+    border-radius: 14px; padding: 16px 18px; margin-top: 20px; color: #f87171; font-size: 13.5px; font-weight: 500;
+  }
+  .error-msg.show { display: flex; }
+
+  @media(max-width:520px){ 
+    header{ padding: 16px 20px; } 
+    main{ padding: 26px 16px 40px; } 
+    .form-card{ padding: 22px 18px; } 
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+  <div class="head-titles">
+    <h1>SHARE FEEDBACK</h1>
+    <p>Help us improve the campus map</p>
+  </div>
+</header>
+
+<main>
+
+  <div class="intro">
+    <div class="badge"><i class="fa-solid fa-heart"></i> We value your input</div>
+    <h2>Spotted something off?</h2>
+    <p>Report a wrong pin, a missing building, or suggest an improvement &mdash; it helps keep the map accurate for everyone.</p>
+  </div>
+
+  <div class="form-card">
+    <form id="feedbackForm">
+
+      <div class="field">
+        <label>What's this about?</label>
+        <div class="type-chips" id="typeChips">
+          <div class="type-chip selected" data-value="Wrong pin location"><i class="fa-solid fa-location-dot"></i> Wrong pin</div>
+          <div class="type-chip" data-value="Missing building"><i class="fa-solid fa-building-circle-exclamation"></i> Missing building</div>
+          <div class="type-chip" data-value="Incorrect info"><i class="fa-solid fa-circle-info"></i> Incorrect info</div>
+          <div class="type-chip" data-value="App bug"><i class="fa-solid fa-bug"></i> App bug</div>
+          <div class="type-chip" data-value="Other"><i class="fa-solid fa-ellipsis"></i> Other</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="building">Which building? (optional)</label>
+        <select id="building">
+          <option value="">Not specific to one building</option>
+          <option>Main Gate</option>
+          <option>Side Gate</option>
+          <option>Main Block</option>
+          <option>Admin Block</option>
+          <option>CS Block</option>
+          <option>MCA Block</option>
+          <option>DMBIM Block</option>
+          <option>Library</option>
+          <option>Canteen</option>
+          <option>Store</option>
+          <option>Day Care</option>
+          <option>Hostel</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>How's your experience with the app?</label>
+        <div class="star-rating" id="starRating">
+          <i class="fa-solid fa-star active" data-rating="1"></i>
+          <i class="fa-solid fa-star active" data-rating="2"></i>
+          <i class="fa-solid fa-star active" data-rating="3"></i>
+          <i class="fa-solid fa-star active" data-rating="4"></i>
+          <i class="fa-solid fa-star active" data-rating="5"></i>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="details">Tell us more</label>
+        <textarea id="details" placeholder="Describe what you noticed or any suggestion..."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="contact">Your email (optional, if you'd like a reply)</label>
+        <input type="text" id="contact" placeholder="you@example.com">
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <span>Submit Feedback</span> <i class="fa-solid fa-paper-plane"></i>
+      </button>
+
+      <div class="success-msg" id="successMsg">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Thanks! Your feedback has been recorded.</span>
+      </div>
+
+      <div class="error-msg" id="errorMsg">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>Couldn't submit feedback. Check your internet connection and try again.</span>
+      </div>
+
+    </form>
+  </div>
+
+</main>
+
+<script>
+const FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbzbX4283p2WuF2QeVqI9yAshdwLoy2DEHjKES5O92SQV7bfYz_K1c6sp_mA7PpwkJH2/exec";
+
+// Chips Toggle
+document.querySelectorAll('.type-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('selected'));
+    chip.classList.add('selected');
+  });
+});
+
+// Star Rating Interaction
+let currentRating = 5;
+const stars = document.querySelectorAll('#starRating i');
+stars.forEach(star => {
+  star.addEventListener('click', () => {
+    currentRating = parseInt(star.dataset.rating);
+    stars.forEach((s, idx) => {
+      if (idx < currentRating) s.classList.add('active');
+      else s.classList.remove('active');
+    });
+  });
+});
+
+document.getElementById('feedbackForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const selectedType = document.querySelector('.type-chip.selected')?.dataset.value || 'Other';
+  const building = document.getElementById('building').value;
+  const details = document.getElementById('details').value;
+  const contact = document.getElementById('contact').value;
+
+  const submitBtn = this.querySelector('.submit-btn');
+  const successMsg = document.getElementById('successMsg');
+  const errorMsg = document.getElementById('errorMsg');
+
+  successMsg.classList.remove('show');
+  errorMsg.classList.remove('show');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<span>Submitting...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
+
+  fetch(FEEDBACK_ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify({ type: selectedType, building, details, contact, rating: currentRating })
+  })
+    .then(() => {
+      successMsg.classList.add('show');
+      this.reset();
+      document.querySelectorAll('.type-chip').forEach(c => c.classList.remove('selected'));
+      document.querySelector('.type-chip').classList.add('selected');
+    })
+    .catch((err) => {
+      console.error("Feedback submit failed:", err);
+      errorMsg.classList.add('show');
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<span>Submit Feedback</span> <i class="fa-solid fa-paper-plane"></i>`;
+      setTimeout(() => {
+        successMsg.classList.remove('show');
+        errorMsg.classList.remove('show');
+      }, 4000);
+    });
+});
+</script>
+
+</body>
+</html>

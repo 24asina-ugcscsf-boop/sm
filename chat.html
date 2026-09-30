@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Assistant</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root {
+    --bg-main: #f1f5f9;
+    --card-bg: #ffffff;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-light: #e0e7ff;
+    --text-primary: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #cbd5e1;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-primary);
+}
+
+.top-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    z-index: 10;
+}
+
+.back-btn {
+    width: 40px; 
+    height: 40px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--bg-main);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover { 
+    background: var(--primary-light); 
+    color: var(--primary);
+    border-color: var(--primary-light);
+}
+
+.top-header h1 { 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: var(--text-primary);
+}
+
+.top-header p { 
+    font-size: 12px; 
+    color: var(--text-muted); 
+    margin-top: 1px; 
+}
+
+.chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.msg {
+    max-width: 80%;
+    padding: 14px 18px;
+    border-radius: var(--radius-lg);
+    font-size: 14px;
+    line-height: 1.6;
+    box-shadow: var(--shadow-sm);
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.msg.bot {
+    align-self: flex-start;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-top-left-radius: 4px;
+}
+
+.msg.user {
+    align-self: flex-end;
+    background: var(--primary);
+    color: #ffffff;
+    border-top-right-radius: 4px;
+}
+
+.dir-card {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dir-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-main);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.dir-step i {
+    color: var(--primary);
+    width: 16px;
+    text-align: center;
+}
+
+.suggestions {
+    display: flex;
+    gap: 8px;
+    padding: 0 24px 16px;
+    overflow-x: auto;
+}
+
+.suggestions::-webkit-scrollbar { display: none; }
+
+.chip {
+    white-space: nowrap;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    background: var(--card-bg);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.chip:hover { 
+    background: var(--primary-light); 
+    color: var(--primary); 
+    border-color: var(--primary); 
+}
+
+.input-container {
+    padding: 16px 24px 20px;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.input-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-main);
+    border: 1.5px solid var(--border-color);
+    padding: 6px 6px 6px 16px;
+    border-radius: var(--radius-lg);
+    transition: border-color 0.2s ease;
+}
+
+.input-bar:focus-within {
+    border-color: var(--primary);
+}
+
+#chatInput {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+}
+
+#chatInput::placeholder {
+    color: var(--text-muted);
+}
+
+#sendBtn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: #ffffff;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+#sendBtn:hover { background: var(--primary-hover); }
+
+.chat-area::-webkit-scrollbar { width: 6px; }
+.chat-area::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 999px; }
+</style>
+</head>
+
+<body>
+
+<header class="top-header">
+    <button class="back-btn" onclick="window.location.href='campus-map.html'">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <div>
+        <h1>Campus Assistant</h1>
+        <p>Ask about any building or campus location</p>
+    </div>
+</header>
+
+<div class="chat-area" id="chatArea">
+    <div class="msg bot">
+        Hi! Ask me about any building on campus — like "where is the library" or "canteen timing".
+    </div>
+</div>
+
+<div class="suggestions" id="suggestions">
+    <button class="chip" onclick="askChip('Where is the library?')">Where is the library?</button>
+    <button class="chip" onclick="askChip('Canteen timing')">Canteen timing</button>
+    <button class="chip" onclick="askChip('How far is the hostel?')">How far is the hostel?</button>
+    <button class="chip" onclick="askChip('List all buildings')">List all buildings</button>
+</div>
+
+<div class="input-container">
+    <div class="input-bar">
+        <input type="text" id="chatInput" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendMessage()">
+        <button id="sendBtn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script>
+const MAIN_GATE_COORDS = [77.803802, 9.462739];
+
+const BUILDINGS = {
+    "main gate": { name: "Main Gate", info: "The main entrance to the campus. Security check-in point for all visitors and vehicles.", coords: [77.803802, 9.462739] },
+    "side gate": { name: "Side Gate", info: "Secondary entrance to the campus, used for quicker access from the side road.", coords: [77.802602, 9.463939] },
+    "main block": { name: "Main Block", info: "Houses the principal's office, administrative staff rooms, and first-year lecture halls.", coords: [77.804302, 9.464139] },
+    "admin block": { name: "Admin Block", info: "Admissions, accounts, and examination cell. Open 9 AM - 5 PM on working days.", coords: [77.804802, 9.463739] },
+    "cs block": { name: "CS Block", info: "Computer Science department. Labs on upper floors, faculty rooms on floor 1.", coords: [77.803602, 9.465139] },
+    "mca block": { name: "MCA Block", info: "Master of Computer Applications department block with dedicated project labs.", coords: [77.803002, 9.464739] },
+    "library": { name: "Library", info: "Central library with reading halls, digital resource center, and reference section.", coords: [77.804602, 9.465439] },
+    "canteen": { name: "Canteen", info: "Main food court. Serves breakfast, lunch, and snacks. Busiest between 12-2 PM.", coords: [77.805002, 9.464439] },
+    "store": { name: "Store", info: "Campus stationery and essentials store. Also stocks uniform accessories.", coords: [77.805302, 9.463939] },
+    "day care": { name: "Day Care", info: "Day care facility on campus for staff and students' young children.", coords: [77.804202, 9.462939] },
+    "hostel": { name: "Hostel", info: "Student residential hostel block with mess facility and common rooms.", coords: [77.802302, 9.465439] }
+};
+
+const chatArea = document.getElementById("chatArea");
+const chatInput = document.getElementById("chatInput");
+
+function addMessage(html, sender) {
+    const div = document.createElement("div");
+    div.className = "msg " + sender;
+    div.innerHTML = html;
+    chatArea.appendChild(div);
+    chatArea.scrollTop = chatArea.scrollHeight;
+    return div;
+}
+
+function findBuilding(text) {
+    const lower = text.toLowerCase();
+    for (const key in BUILDINGS) {
+        if (lower.includes(key)) return BUILDINGS[key];
+    }
+    if (lower.includes("cse") || lower.includes("computer science")) return BUILDINGS["cs block"];
+    if (lower.includes("mca")) return BUILDINGS["mca block"];
+    return null;
+}
+
+function getDistanceMeters(a, b) {
+    const R = 6371000;
+    const toRad = (d) => (d * Math.PI) / 180;
+    const [lng1, lat1] = a, [lng2, lat2] = b;
+    const dLat = toRad(lat2 - lat1), dLng = toRad(lng2 - lng1);
+    const x = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+}
+
+function calcBearing(a, b) {
+    const toRad = (d) => (d * Math.PI) / 180;
+    const [lng1, lat1] = a, [lng2, lat2] = b;
+    const phi1 = toRad(lat1), phi2 = toRad(lat2);
+    const lambda1 = toRad(lng1), lambda2 = toRad(lng2);
+    const y = Math.sin(lambda2 - lambda1) * Math.cos(phi2);
+    const x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(lambda2 - lambda1);
+    return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+}
+
+function buildTurnCues(coords, dists) {
+    const total = dists[dists.length - 1];
+    if (total < 25 || coords.length < 4) return [];
+    const cues = [];
+    const sampleGap = Math.max(12, total / 6);
+    let lastSampleDist = 0, lastBearing = null, lastIdx = 0;
+    for (let i = 1; i < coords.length; i++) {
+        if (dists[i] - lastSampleDist < sampleGap && i !== coords.length - 1) continue;
+        const bearing = calcBearing(coords[lastIdx], coords[i]);
+        if (lastBearing !== null) {
+            let diff = ((bearing - lastBearing + 540) % 360) - 180;
+            if (Math.abs(diff) > 28) {
+                cues.push({ atDistance: dists[lastIdx], text: diff > 0 ? "turn right" : "turn left" });
+            }
+        }
+        lastBearing = bearing;
+        lastSampleDist = dists[i];
+        lastIdx = i;
+    }
+    return cues;
+}
+
+async function getDirectionsTo(building) {
+    const start = MAIN_GATE_COORDS;
+    const end = building.coords;
+
+    let coords = null;
+    try {
+        const url = `https://routing.openstreetmap.de/routed-foot/route/v1/foot/${start[0]},${start[1]};${end[0]},${end[1]}?overview=full&geometries=geojson`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.routes && data.routes.length) coords = data.routes[0].geometry.coordinates;
+    } catch (err) {
+        console.warn("Routing unavailable:", err);
+    }
+
+    if (!coords) coords = [start, end];
+
+    const dists = [0];
+    for (let i = 1; i < coords.length; i++) dists.push(dists[i - 1] + getDistanceMeters(coords[i - 1], coords[i]));
+    const total = dists[dists.length - 1];
+    const turnCues = buildTurnCues(coords, dists);
+
+    const steps = [];
+    let prevDist = 0;
+    turnCues.forEach((cue) => {
+        const segLen = Math.round(cue.atDistance - prevDist);
+        if (segLen > 3) steps.push({ icon: 'fa-person-walking', text: `Walk straight for about ${segLen} m` });
+        steps.push({ icon: cue.text === 'turn right' ? 'fa-arrow-right' : 'fa-arrow-left', text: `Then ${cue.text}` });
+        prevDist = cue.atDistance;
+    });
+    const lastLeg = Math.round(total - prevDist);
+    steps.push({ icon: 'fa-location-dot', text: `Continue for ${lastLeg} m \u2014 Arrive at ${building.name}` });
+
+    const walkMinutes = Math.max(1, Math.round(total / 1.4 / 60));
+    return { steps, total: Math.round(total), walkMinutes };
+}
+
+function renderDirections(building, dirData) {
+    const stepsHtml = dirData.steps.map(s => 
+        `<div class="dir-step"><i class="fa-solid ${s.icon}"></i><span>${s.text}</span></div>`
+    ).join("");
+    
+    return `<div><strong>${building.name}</strong> (${dirData.total}m, ~${dirData.walkMinutes} min walk)</div>` +
+        `<div class="dir-card">${stepsHtml}</div>`;
+}
+
+async function getReply(text) {
+    const lower = text.toLowerCase();
+
+    if (lower.includes("list") && lower.includes("building")) {
+        const names = Object.values(BUILDINGS).map(b => b.name).join(", ");
+        return "Here are all campus buildings: " + names + ".";
+    }
+
+    if (lower.includes("hi") || lower.includes("hello")) {
+        return "Hello! Ask me about any building on campus.";
+    }
+
+    const building = findBuilding(text);
+    if (building) {
+        const dirData = await getDirectionsTo(building);
+        return renderDirections(building, dirData) + `<div style="margin-top:10px; color:var(--text-muted); font-size:12px">${building.info}</div>`;
+    }
+
+    return "I couldn't find that location. Try asking for Canteen, Library, CS Block, etc.";
+}
+
+async function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    addMessage(text, "user");
+    chatInput.value = "";
+
+    const loadingEl = addMessage("Finding directions...", "bot");
+    const reply = await getReply(text);
+    loadingEl.innerHTML = reply;
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function askChip(text) {
+    chatInput.value = text;
+    sendMessage();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building Directory - Smart 3D Campus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+  :root {
+    --bg-0: #0d0b21;
+    --card: #ffffff;
+    --text-hi: #ffffff;
+    --text-low: #8b85b1;
+    --ink: #0f172a;
+    --ink-mid: #475569;
+    --radius: 20px;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-0);
+    color: var(--text-hi);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.18) 0%, transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 45%),
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+    background-attachment: fixed;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  header {
+    display: flex; 
+    align-items: center; 
+    gap: 16px;
+    padding: 20px 36px;
+    background: rgba(21, 19, 46, 0.7);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 10;
+  }
+
+  .back-btn {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; cursor: pointer; text-decoration: none; font-size: 16px;
+    transition: all 0.2s ease;
+  }
+  .back-btn:hover {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: #6366f1;
+    transform: translateX(-2px);
+  }
+
+  .head-titles h1 { 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 18px; 
+    font-weight: 800; 
+    letter-spacing: 0.8px; 
+    background: linear-gradient(135deg, #ffffff, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .head-titles p { font-size: 12px; color: var(--text-low); margin-top: 1px; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 40px 28px 60px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+
+  .b-card {
+    background: #ffffff;
+    border-radius: var(--radius);
+    padding: 24px;
+    color: var(--ink);
+    cursor: pointer;
+    position: relative;
+    border: 2px solid transparent;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .b-card.theme-indigo { background: linear-gradient(180deg, #ffffff 0%, #f5f3ff 100%); }
+  .b-card.theme-indigo:hover { border-color: #6366f1; box-shadow: 0 16px 36px rgba(99, 102, 241, 0.35); }
+
+  .b-card.theme-amber { background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%); }
+  .b-card.theme-amber:hover { border-color: #f59e0b; box-shadow: 0 16px 36px rgba(245, 158, 11, 0.35); }
+
+  .b-card.theme-emerald { background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%); }
+  .b-card.theme-emerald:hover { border-color: #10b981; box-shadow: 0 16px 36px rgba(16, 185, 129, 0.35); }
+
+  .b-card.theme-rose { background: linear-gradient(180deg, #ffffff 0%, #fff1f2 100%); }
+  .b-card.theme-rose:hover { border-color: #f43f5e; box-shadow: 0 16px 36px rgba(244, 63, 94, 0.35); }
+
+  .b-card:hover { transform: translateY(-6px); }
+
+  .b-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .b-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+
+  .theme-indigo .b-icon { background: #e0e7ff; color: #4f46e5; }
+  .theme-amber .b-icon { background: #fef3c7; color: #d97706; }
+  .theme-emerald .b-icon { background: #d1fae5; color: #059669; }
+  .theme-rose .b-icon { background: #ffe4e6; color: #e11d48; }
+
+  .b-card h3 { 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: #0f172a;
+    margin-bottom: 6px; 
+  }
+  
+  .b-card p { 
+    font-size: 13px; 
+    color: #475569; 
+    line-height: 1.5; 
+    margin-bottom: 16px;
+  }
+
+  .b-card .tap-hint { 
+    font-size: 12px; 
+    font-weight: 700; 
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.2s ease;
+  }
+
+  .theme-indigo .tap-hint { color: #4f46e5; }
+  .theme-amber .tap-hint { color: #d97706; }
+  .theme-emerald .tap-hint { color: #059669; }
+  .theme-rose .tap-hint { color: #e11d48; }
+
+  .b-card:hover .tap-hint { gap: 10px; }
+
+  @media(max-width:860px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:540px){ .grid{grid-template-columns:1fr;} header{padding:16px 20px;} main{padding:24px 18px 40px;} }
+
+  /* ---- Modal Styling ---- */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(13, 11, 33, 0.75);
+    backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; transition: opacity 0.25s ease;
+  }
+  .modal-overlay.active { display: flex; opacity: 1; }
+
+  .modal-card {
+    background: #ffffff; 
+    border-radius: 24px;
+    max-width: 500px; width: 100%; padding: 28px;
+    color: var(--ink);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: translateY(20px) scale(.95);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .modal-overlay.active .modal-card { transform: translateY(0) scale(1); }
+
+  .modal-header-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .modal-icon {
+    width: 52px; height: 52px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+
+  .modal-card h2 { font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700; color: #0f172a; }
+  .modal-card .modal-sub { font-size: 13px; color: #64748b; }
+
+  .dept-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 22px; }
+  
+  .dept-item {
+    display: flex; align-items: center; gap: 10px;
+    background: #f8fafc; border: 1px solid #e2e8f0;
+    border-radius: 12px; padding: 10px 12px;
+    font-size: 13px; font-weight: 600; color: #1e293b;
+  }
+
+  .dept-item .dept-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+
+  .modal-close {
+    width: 100%; padding: 14px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, #6366f1, #4f46e5); color: #fff; font-family: inherit;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    transition: all 0.2s ease;
+  }
+  .modal-close:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="dashboard.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+  <div class="head-titles">
+    <h1>BUILDING DIRECTORY</h1>
+    <p>All mapped blocks at SFRC Sivakasi</p>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <div class="b-card theme-indigo" onclick="openModal('mainBlock')">
+      <div>
+        <div class="b-header">
+          <div class="b-icon"><i class="fa-solid fa-building-columns"></i></div>
+        </div>
+        <h3>Main Block</h3>
+        <p>Principal's office, administrative staff rooms, first-year lecture halls.</p>
+      </div>
+      <div class="tap-hint">Tap to see departments <i class="fa-solid fa-arrow-right"></i></div>
+    </div>
+
+    <div class="b-card theme-amber" onclick="openModal('adminBlock')">
+      <div>
+        <div class="b-header">
+          <div class="b-icon"><i class="fa-solid fa-building-user"></i></div>
+        </div>
+        <h3>Admin Block</h3>
+        <p>Admissions, accounts, and examination cell. Open 9 AM - 5 PM.</p>
+      </div>
+      <div class="tap-hint">Tap to see departments <i class="fa-solid fa-arrow-right"></i></div>
+    </div>
+
+    <div class="b-card theme-emerald" onclick="openModal('csBlock')">
+      <div>
+        <div class="b-header">
+          <div class="b-icon"><i class="fa-solid fa-laptop-code"></i></div>
+        </div>
+        <h3>CS Block</h3>
+        <p>Computer Science department, labs on upper floors.</p>
+      </div>
+      <div class="tap-hint">Tap to see departments <i class="fa-solid fa-arrow-right"></i></div>
+    </div>
+
+    <div class="b-card theme-rose" onclick="openModal('mcaBlock')">
+      <div>
+        <div class="b-header">
+          <div class="b-icon"><i class="fa-solid fa-microchip"></i></div>
+        </div>
+        <h3>MCA Block</h3>
+        <p>Master of Computer Applications department with project labs.</p>
+      </div>
+      <div class="tap-hint">Tap to see departments <i class="fa-solid fa-arrow-right"></i></div>
+    </div>
+
+  </div>
+</main>
+
+<!-- DEPARTMENT MODAL -->
+<div class="modal-overlay" id="deptModal">
+  <div class="modal-card">
+    <div class="modal-header-block">
+      <div class="modal-icon" id="modalIcon"><i class="fa-solid fa-building"></i></div>
+      <div>
+        <h2 id="modalTitle">Building Name</h2>
+        <div class="modal-sub" id="modalSub">Departments &amp; offices</div>
+      </div>
+    </div>
+    <div class="dept-list" id="modalDeptList"></div>
+    <button class="modal-close" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+const BUILDING_DATA = {
+  mainBlock: {
+    name: "Main Block", icon: "fa-building-columns", theme: "theme-indigo",
+    bg: "#e0e7ff", fg: "#4f46e5",
+    departments: [
+      { name: "Tamil (M3)", icon: "fa-language" },
+      { name: "English (M5)", icon: "fa-book-open" },
+      { name: "Nutrition (M22)", icon: "fa-apple-whole" },
+      { name: "Microbiology (M29)", icon: "fa-microscope" },
+      { name: "Physics (M25)", icon: "fa-atom" },
+      { name: "Chemistry (M7)", icon: "fa-flask" },
+      { name: "Botany (M21)", icon: "fa-seedling" }
+    ]
+  },
+  adminBlock: {
+    name: "Admin Block", icon: "fa-building-user", theme: "theme-amber",
+    bg: "#fef3c7", fg: "#d97706",
+    departments: [
+      { name: "Psychology (A4)", icon: "fa-brain" },
+      { name: "B.Com CA (A10)", icon: "fa-calculator" },
+      { name: "B.Com General (A11)", icon: "fa-money-bill-wave" },
+      { name: "Commerce (A22)", icon: "fa-chart-line" },
+      { name: "Principal's Room", icon: "fa-user-tie" },
+      { name: "Controller Office", icon: "fa-clipboard-check" },
+      { name: "SF Office", icon: "fa-folder-open" },
+      { name: "Regulation Office", icon: "fa-gavel" },
+      { name: "Custom Dept (A9)", icon: "fa-star" }
+    ]
+  },
+  csBlock: {
+    name: "CS Block", icon: "fa-laptop-code", theme: "theme-emerald",
+    bg: "#d1fae5", fg: "#059669",
+    departments: [
+      { name: "CS Regular Dept (C12)", icon: "fa-laptop-code" },
+      { name: "Data Science (C7)", icon: "fa-chart-simple" },
+      { name: "English (SF) (C15)", icon: "fa-book-open" },
+      { name: "History (C18)", icon: "fa-landmark" }
+    ]
+  },
+  mcaBlock: {
+    name: "MCA Block", icon: "fa-microchip", theme: "theme-rose",
+    bg: "#ffe4e6", fg: "#e11d48",
+    departments: [
+      { name: "Web Lab", icon: "fa-globe" },
+      { name: "MCA Dept (T6)", icon: "fa-microchip" },
+      { name: "Maths", icon: "fa-square-root-variable" },
+      { name: "CS (SF) Dept (T25)", icon: "fa-code" },
+      { name: "Conference Hall", icon: "fa-people-group" },
+      { name: "BBA Dept (T12)", icon: "fa-briefcase" }
+    ]
+  }
+};
+
+const DEPT_COLORS = [
+  { bg: "#E7E3FF", fg: "#6C63FF" }, 
+  { bg: "#FDE7D8", fg: "#E07A2C" }, 
+  { bg: "#DCF6E8", fg: "#1E8449" }, 
+  { bg: "#FCE4EC", fg: "#C2185B" }, 
+  { bg: "#E0F3FB", fg: "#0E7AA6" }, 
+  { bg: "#FFF3D6", fg: "#B4790A" }, 
+  { bg: "#EDE1FB", fg: "#8039C7" }
+];
+
+function openModal(key) {
+  const b = BUILDING_DATA[key];
+  if (!b) return;
+
+  const modalIconEl = document.getElementById("modalIcon");
+  modalIconEl.style.background = b.bg;
+  modalIconEl.style.color = b.fg;
+  modalIconEl.innerHTML = `<i class="fa-solid ${b.icon}"></i>`;
+  document.getElementById("modalTitle").textContent = b.name;
+
+  const listEl = document.getElementById("modalDeptList");
+
+  listEl.innerHTML = b.departments.map((d, i) => {
+    const c = DEPT_COLORS[i % DEPT_COLORS.length];
+    return `<div class="dept-item"><div class="dept-icon" style="background:${c.bg};color:${c.fg}"><i class="fa-solid ${d.icon}"></i></div><span>${d.name}</span></div>`;
+  }).join("");
+
+  document.getElementById("deptModal").classList.add("active");
+}
+
+function closeModal() {
+  document.getElementById("deptModal").classList.remove("active");
+}
+
+document.getElementById("deptModal").addEventListener("click", (e) => {
+  if (e.target.id === "deptModal") closeModal();
+});
+</script>
+
+</body>
+</html>

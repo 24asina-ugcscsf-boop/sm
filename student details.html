@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal & Transport Services</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #090e17 0%, #1a1f2c 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .campus-info-container {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #fca311;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 3px;
+            background: #fca311;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Card Styles */
+        .info-card {
+            background: rgba(23, 31, 50, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(252, 163, 17, 0.15);
+        }
+
+        .info-card h2 {
+            color: #ffffff;
+            font-size: 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+        }
+
+        .info-card h2 i {
+            color: #ff7e5f;
+        }
+
+        /* Fee Section */
+        .fee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .fee-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #ff7e5f;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .fee-box:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .fee-box h3 {
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .fee-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fca311;
+            margin-bottom: 8px;
+        }
+
+        .fee-box p {
+            font-size: 13px;
+            color: #cbd5e0;
+        }
+
+        .bus-routes-list {
+            margin-top: 6px;
+            font-size: 12.5px;
+            color: #cbd5e0;
+        }
+
+        .bus-routes-list div {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .note {
+            color: #a0aec0;
+            font-style: italic;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+
+        /* Scholarship Section */
+        .scholarship-list {
+            list-style-type: none;
+            display: grid;
+            gap: 15px;
+        }
+
+        .scholarship-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 18px 22px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .scholarship-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: #38ef7d;
+            transform: translateX(5px);
+        }
+
+        .scholarship-icon {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(56, 239, 125, 0.3);
+        }
+
+        .scholarship-content strong {
+            color: #ffffff;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .scholarship-content p {
+            font-size: 13.5px;
+            color: #a0aec0;
+            line-height: 1.5;
+        }
+
+        /* Route Tables */
+        .routes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .route-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+            padding-bottom: 10px;
+        }
+
+        .route-header h3 {
+            color: #4facfe;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .departure-badge {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: #090e17;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 13.5px;
+        }
+
+        th {
+            background-color: rgba(79, 172, 254, 0.15);
+            color: #00f2fe;
+            font-weight: 600;
+            border-radius: 6px;
+        }
+
+        td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="campus-info-container">
+        <h1 class="page-title">Student Information Portal</h1>
+
+        <!-- Section 1: Fee Structure -->
+        <section id="fee-structure" class="info-card">
+            <h2><i class="fa-solid fa-wallet"></i> Fee Details</h2>
+            <div class="fee-grid">
+                <div class="fee-box">
+                    <div>
+                        <h3>College Fee</h3>
+                        <div class="fee-amount">₹ 19,500</div>
+                    </div>
+                    <p>Tuition and academic management fees</p>
+                </div>
+                <div class="fee-box">
+                    <div>
+                        <h3>Hostel Fee</h3>
+                        <div class="fee-amount">₹ 35,000</div>
+                    </div>
+                    <p>Room accommodation & Mess charges included</p>
+                </div>
+                <div class="fee-box">
+                    <div>
+                        <h3>Exam Fee</h3>
+                        <div class="fee-amount">₹ 2,500</div>
+                    </div>
+                    <p>Semester examination and evaluation charges</p>
+                </div>
+                <div class="fee-box">
+                    <div>
+                        <h3>Bus Fee</h3>
+                        <p>Calculated based on route location</p>
+                    </div>
+                    <div class="bus-routes-list">
+                        <div><span>Sattur:</span> <b>₹ 9,500</b></div>
+                        <div><span>Rajapalayam:</span> <b>₹ 10,500</b></div>
+                    </div>
+                </div>
+            </div>
+            <p class="note">* Note: Detailed term-wise fee receipts can be collected directly from the Accounts Office.</p>
+        </section>
+
+        <!-- Section 2: Scholarship Schemes -->
+        <section id="scholarship" class="info-card">
+            <h2><i class="fa-solid fa-graduation-cap"></i> Scholarship Schemes</h2>
+            <ul class="scholarship-list">
+                <li class="scholarship-item">
+                    <div class="scholarship-icon"><i class="fa-solid fa-award"></i></div>
+                    <div class="scholarship-content">
+                        <strong>Puthumai Penn Thittam</strong>
+                        <p>Financial assistance of ₹1,000/month for female students who studied in Tamil Nadu Government schools from Class 6th to 12th.</p>
+                    </div>
+                </li>
+                <li class="scholarship-item">
+                    <div class="scholarship-icon"><i class="fa-solid fa-building-columns"></i></div>
+                    <div class="scholarship-content">
+                        <strong>Central Sector Scheme</strong>
+                        <p>Scholarship for meritorious students based on Class 12th Board Examination marks.</p>
+                    </div>
+                </li>
+                <li class="scholarship-item">
+                    <div class="scholarship-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+                    <div class="scholarship-content">
+                        <strong>Uzhavar Nala Variyam</strong>
+                        <p>Educational assistance provided for children of registered farmers/agricultural workers.</p>
+                    </div>
+                </li>
+                <li class="scholarship-item">
+                    <div class="scholarship-icon"><i class="fa-solid fa-id-card"></i></div>
+                    <div class="scholarship-content">
+                        <strong>SC / ST / SCC Scholarship</strong>
+                        <p>Post-Matric Scholarship and full tuition fee exemption scheme provided by the State Government.</p>
+                    </div>
+                </li>
+                <li class="scholarship-item">
+                    <div class="scholarship-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="scholarship-content">
+                        <strong>BC / MBC / DNC Scholarship</strong>
+                        <p>State Government welfare scholarship scheme for BC, MBC, and DNC category students.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section 3: Bus Details & Timings -->
+        <section id="transport" class="info-card">
+            <h2><i class="fa-solid fa-bus"></i> Transport & Route Details</h2>
+            
+            <div class="routes-container">
+                <!-- Bus Stops Route Card -->
+                <div class="route-box">
+                    <div class="route-header">
+                        <h3><i class="fa-solid fa-location-dot"></i> Campus Bus Stops</h3>
+                        <span class="departure-badge"><i class="fa-regular fa-clock"></i> Scheduled Route</span>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Stop Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Sattur</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Padanthal</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Mamsapuram</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Sethur</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Rajapalayam</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Srivilliputhur</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Thalavaipuram</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Thiruthangal</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Sassi Nagar</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Bus Stand</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
